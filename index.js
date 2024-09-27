@@ -3,19 +3,12 @@ const nocache = require('nocache');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
-const https = require('https');  // Import the https module
+const https = require('http');  // Import the https module
 const { readSecondaryPlaylist } = require('./playlists');
 
 const app = express();
 
 const bgmpath = path.join(__dirname, 'public', 'bgm');
-
-//? Configure SSL Certs
-const credentials = {
-    cert: fs.readFileSync("/Users/camilotd/certs/ps-music.pem", 'utf8'),
-    key: fs.readFileSync("/Users/camilotd/certs/ps-music-key.pem", 'utf8'),
-    ca: fs.readFileSync("/Users/camilotd/certs/ps-music.pem", 'utf8')
-};
 
 app.use(nocache());
 app.use(cors());
@@ -44,10 +37,10 @@ app.get('/playlist', (req, res) => {
 });
 
 // Use https.createServer() with your credentials and Express app
-const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(app);
 
-httpsServer.listen(3000, () => {
-    console.log('HTTPS Server running on port 3000');
+httpsServer.listen(62223, () => {
+    console.log('HTTP Server running on port 62223');
 });
 
 process.on('uncaughtException', console.error);
